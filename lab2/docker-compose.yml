@@ -1,0 +1,27 @@
+services:
+  coordinator:
+    build:
+      context: ./coordinator
+    ports:
+      - "8000:8000"
+    networks:
+      - lab_network
+
+  shard:
+    build:
+      context: ./shard
+    environment:
+      - COORDINATOR_URL=http://coordinator:8000
+    volumes:
+      - ./data:/app/data  # Спільний том для всіх шардів (файли не перетнуться, бо назви різні)
+    depends_on:
+      - coordinator
+    networks:
+      - lab_network
+
+networks:
+  lab_network:
+    driver: bridge
+
+volumes:
+  shard_data:

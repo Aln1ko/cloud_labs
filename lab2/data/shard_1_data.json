@@ -1,0 +1,7 @@
+{
+  "test": {
+    "primary_key": "id",
+    "sort_key": "timestamp",
+    "records": []
+  }
+}

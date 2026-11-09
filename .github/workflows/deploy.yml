@@ -1,0 +1,21 @@
+name: Auto Deploy Sharded DB
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout latest code
+        uses: actions/checkout@v4
+
+      - name: Build and Deploy Docker Containers
+        working-directory: ./lab2
+        run: |
+          docker compose up -d --build --scale shard=2
+          docker compose ps
