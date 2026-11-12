@@ -46,8 +46,8 @@ def get_shard_url(record_id: str) -> str:
 
 app = FastAPI()
 
-token_capacity = 4.0
-tokens = 4.0
+token_capacity = 4000.0
+tokens = 40000.0
 last_refill = time.time()
 refill_rate = token_capacity/60
 bucket_lock = asyncio.Lock()

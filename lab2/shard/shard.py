@@ -206,7 +206,7 @@ db: Optional[JsonDatabase] = None
 
 app = FastAPI(lifespan=lifespan)
 
-rate_limit = 5
+rate_limit = 500000
 requests = []
 siding_window_lock = asyncio.Lock()
 

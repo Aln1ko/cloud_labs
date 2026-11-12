@@ -1,0 +1,25 @@
+name: Deploy Lab 3
+on:
+  push:
+    branches: [ main ]
+    paths: # Цей workflow запуститься ТІЛЬКИ якщо змінився lab2
+      - 'lab3/**'
+      - '.github/workflows/lab3.yml'
+
+defaults:
+  run:
+    working-directory: ./lab3 # Всі кроки виконуються в папці lab2
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout latest code
+        uses: actions/checkout@v4
+
+      - name: Build and Deploy Docker Containers
+        # working-directory: ./lab2
+        run: |
+          docker compose up -d --build --scale shard=2
+          docker compose ps
