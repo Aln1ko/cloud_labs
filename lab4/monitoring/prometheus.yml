@@ -1,0 +1,28 @@
+global:
+  # Інтервал опитування сервісів
+  scrape_interval: 5s 
+  evaluation_interval: 5s
+
+rule_files: 
+  - 'alert_rules.yml'
+
+# Список сервісів для опитування
+scrape_configs:
+  # 1. Сам Prometheus (для моніторингу його роботи)
+  - job_name: 'prometheus'
+    scrape_interval: 5s  #Перевизначте глобальне налаштування за замовчуванням
+    # Оскільки Prometheus запущений у своїй мережі, він доступний за localhost
+    static_configs:
+      - targets: ['localhost:9090'] 
+
+  - job_name: 'coordinator'
+    static_configs:
+      - targets: ['coordinator:8000']
+    metrics_path: '/metrics'
+
+  - job_name: 'shard'
+    dns_sd_configs:
+      - names: ['shard']
+        type: 'A'
+        port: 8000
+    metrics_path: '/metrics'

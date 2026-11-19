@@ -1,0 +1,17 @@
+{
+  "books": {
+    "primary_key": "id",
+    "records": [
+      {
+        "id": "b806ec7c-ba15-4ea9-b129-e0bef3511c67",
+        "title": "Book 2",
+        "price": 15.99
+      },
+      {
+        "id": "d442209e-c17e-4c1b-9999-a6a2e9aa8ffe",
+        "title": "Book 1",
+        "price": 10.99
+      }
+    ]
+  }
+}

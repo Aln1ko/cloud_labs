@@ -1,0 +1,36 @@
+groups:
+- name: CriticalServiceAlerts
+  rules:
+  - alert: InstanceDown
+    expr: up == 0 
+    for: 5s
+    labels:
+      severity: page
+    annotations:
+      summary: "Сервіс {{ $labels.instance }} не працює"
+      description: " Сервіс {{ $labels.instance }} з задачею {{ $labels.job }} не відповідає більше 5 секунд."
+ 
+  - alert: ShardReplicaDown
+    expr: cluster_dead_replicas > 0
+    for: 10s
+    labels:
+      severity: page
+    annotations:
+      summary: "Сервіс {{ $labels.shard_id }} не працює"
+      description: " Сервіс {{ $labels.shard_id }} не відповідає більше 5 секунд."
+ 
+  - alert: HighP99Latency
+    expr: histogram_quantile(0.99, sum by (le, service) (rate(http_request_duration_second_bucket[5m]))) > 0.05
+    for: 10s
+    labels:
+      severity: page
+    annotations:
+      summary: "Затримка більше 50мс"
+  
+  - alert: HighReplicationLag
+    expr: shard_replication_lag > 2
+    for: 10s
+    labels:
+      severity: page
+    annotations:
+      summary: "Лаг реплікації на {{ $labels.replica_url }} ({{ $labels.shard_id }}) становить {{ $value }} записів"

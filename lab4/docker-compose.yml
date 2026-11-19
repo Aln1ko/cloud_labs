@@ -1,0 +1,50 @@
+services:
+  coordinator:
+    build:
+      context: ./coordinator
+    ports:
+      - "8000:8000"
+    networks:
+      - lab_network
+    environment:
+      - APP_VERSION=4.0.0
+
+  shard:
+    build:
+      context: ./shard
+    environment:
+      - COORDINATOR_URL=http://coordinator:8000
+      - APP_VERSION=4.0.0
+    volumes:
+      - ./data:/app/data  # Спільний том для всіх шардів (файли не перетнуться, бо назви різні)
+    depends_on:
+      - coordinator
+    networks:
+      - lab_network
+    
+  prometheus:
+    image: prom/prometheus:latest
+    ports: 
+      - "9090:9090" 
+    volumes:
+      - ./monitoring:/etc/prometheus
+    networks:
+      - lab_network
+  
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_LOG_LEVEL=warn
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - lab_network
+
+networks:
+  lab_network:
+    driver: bridge
+
+volumes:
+  shard_data:

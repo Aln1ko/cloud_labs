@@ -27,9 +27,10 @@ class ShardRegistration(BaseModel):
 # replicas: [
 # "http://shard1:8000",
 # "http://shard2:8000"
-# "http://shard3:8000"] }, "shard2": "http://shard2:8000".......}
+# "http://shard3:8000"] 
+# }, "shard2": "http://shard2:8000".......}
 registered_shards: dict[dict[str, str]] = {}
-dead_shards: dict[str, list[str]] = {}
+dead_shards: dict[str, list[str]] = {} # shard_1 : []
 url_to_replica_info: dict[str, tuple[str, str]] = {}
 
 num_of_replica = 3
